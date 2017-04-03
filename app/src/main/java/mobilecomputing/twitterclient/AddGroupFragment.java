@@ -15,6 +15,8 @@ public class AddGroupFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        //Test commit
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Test")
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
