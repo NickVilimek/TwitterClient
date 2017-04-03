@@ -15,7 +15,7 @@ public class AddGroupFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        //Test commit
+        //Test commit again
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Test")
