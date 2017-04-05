@@ -1,4 +1,4 @@
-package backend; 
+package mobilecomputing.twitterclient.backend;
 
 public class EnrichedTweet extends Tweet {
 	private String senderScreenname; 

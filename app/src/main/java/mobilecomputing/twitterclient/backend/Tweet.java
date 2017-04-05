@@ -1,5 +1,4 @@
-
-package backend;
+package mobilecomputing.twitterclient.backend;
 
 import java.util.Date;
 

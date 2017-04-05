@@ -1,14 +1,8 @@
-package backend;
+package mobilecomputing.twitterclient.backend;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-
-import twitter.EnrichedTweet;
-import twitter.Tweet;
-import twitter.Twitter4JWrapper;
-import twitter.TwitterUser;
 
 public class TwitterInterface {
 	private Twitter4JWrapper wrapper = new Twitter4JWrapper("rfZiyU6XkHv5Sm0oEFU6hgKX2", 

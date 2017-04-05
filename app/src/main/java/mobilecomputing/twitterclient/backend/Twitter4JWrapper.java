@@ -1,4 +1,4 @@
-package backend;
+package mobilecomputing.twitterclient.backend;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -89,7 +89,7 @@ public class Twitter4JWrapper {
 					count++; 
 					if (count>numTweets) break; 
 					//text
-					Tweet userTweet = new Tweet(stat.getText()); 
+					Tweet userTweet = new Tweet(stat.getText());
 					//date
 					Date d = stat.getCreatedAt(); 
 					userTweet.setDateCreated(d); 
