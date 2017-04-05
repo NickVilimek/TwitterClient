@@ -11,22 +11,27 @@ import android.view.LayoutInflater;
 
 public class AddGroupFragment extends DialogFragment {
 
+    private String title = "Add a Group";
+
+    public void setTitle(String _title){
+        title = _title;
+    }
+
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        //Test commit again
+        //Test commit ag
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Test")
+        builder.setTitle(title)
+                .setView(R.layout.add_group_fragment)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        //Fill
                     }
                 })
                 .setNegativeButton("Cancel", null);
-
         return builder.create();
     }
 }

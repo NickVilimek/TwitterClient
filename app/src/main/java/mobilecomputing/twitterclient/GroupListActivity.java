@@ -39,7 +39,8 @@ public class GroupListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Create New Group
+                AddGroupFragment addGroupFragment = new AddGroupFragment();
+                addGroupFragment.show(getSupportFragmentManager(),"fragment");
             }
         });
 

@@ -68,7 +68,7 @@ public class GroupDetailFragment extends Fragment {
             TweetInfo tempData = tweets.get(position);
 
             holder.tweetInfo = tempData;
-            holder.displayName.setText(tempData.displayName);
+            holder.userName.setText(tempData.userName);
             holder.tweetText.setText(tempData.tweetText);
         }
 
@@ -80,7 +80,7 @@ public class GroupDetailFragment extends Fragment {
         public class ViewHolder extends RecyclerView.ViewHolder {
             public final View _view;
             public final ImageView profileImage;
-            public final TextView displayName;
+            public final TextView userName;
             public final TextView tweetText;
             public TweetInfo tweetInfo;
 
@@ -88,7 +88,7 @@ public class GroupDetailFragment extends Fragment {
                 super(view);
                 _view = view;
                 profileImage = (ImageView) view.findViewById(R.id.profileImage);
-                displayName = (TextView) view.findViewById(R.id.displayName);
+                userName = (TextView) view.findViewById(R.id.displayName);
                 tweetText = (TextView) view.findViewById(R.id.tweetText);
             }
         }

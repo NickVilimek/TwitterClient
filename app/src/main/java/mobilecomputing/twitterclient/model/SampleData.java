@@ -2,15 +2,11 @@ package mobilecomputing.twitterclient.model;
 
 import java.util.ArrayList;
 
-/**
- * Created by Nick on 3/31/17.
- */
-
 public class SampleData {
 
     public static ArrayList<Group> GenerateGroups(){
 
-        ArrayList<Group> list = new ArrayList<Group>();
+        ArrayList<Group> list = new ArrayList<>();
 
         Group group1 = new Group();
         group1.id = 1;
@@ -41,21 +37,21 @@ public class SampleData {
         return list;
     }
     public static ArrayList<TweetInfo> GenerateTweets(){
-        ArrayList<TweetInfo> list = new ArrayList<TweetInfo>();
+        ArrayList<TweetInfo> list = new ArrayList<>();
 
         TweetInfo tweetInfo1 = new TweetInfo();
         tweetInfo1.id = 1;
-        tweetInfo1.displayName = "tweeter";
+        tweetInfo1.userName = "tweeter";
         tweetInfo1.tweetText = "tweet number 1";
 
         TweetInfo tweetInfo2 = new TweetInfo();
         tweetInfo2.id = 2;
-        tweetInfo2.displayName = "tweeter2";
+        tweetInfo2.userName = "tweeter2";
         tweetInfo2.tweetText = "tweet number 2";
 
         TweetInfo tweetInfo3 = new TweetInfo();
         tweetInfo3.id = 3;
-        tweetInfo3.displayName = "tweeter3";
+        tweetInfo3.userName = "tweeter3";
         tweetInfo3.tweetText = "tweet number 3";
 
         list.add(tweetInfo1);
