@@ -15,37 +15,45 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import mobilecomputing.twitterclient.database.DBHelper;
 import mobilecomputing.twitterclient.model.Group;
-import mobilecomputing.twitterclient.model.SampleData;
 
 public class GroupListActivity extends AppCompatActivity {
 
     private boolean mTwoPane;
+    public DBHelper helper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_list);
 
+        /* Title */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setTitle(getTitle());
+
+        /* Database */
+        helper = new DBHelper(getBaseContext());
+
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.group_list);
+        final GroupRecylerAdapter adapter = new GroupRecylerAdapter(helper.GetGroups());
+        recyclerView.setAdapter(adapter); //Hardcoded Data
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AddGroupFragment addGroupFragment = new AddGroupFragment();
+                addGroupFragment.setGroupList(adapter.groups);
                 addGroupFragment.show(getSupportFragmentManager(),"fragment");
+                adapter.notifyDataSetChanged();
             }
         });
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.group_list);
-        recyclerView.setAdapter(new GroupRecylerAdapter(SampleData.GenerateGroups())); //Hardcoded Data
 
         //If device has the correct amount of width it splits into a Master-Detail
         if (findViewById(R.id.group_detail_container) != null) {
@@ -56,7 +64,7 @@ public class GroupListActivity extends AppCompatActivity {
     /* Handles all the interaction and data with the list of groups */
     public class GroupRecylerAdapter extends RecyclerView.Adapter<GroupRecylerAdapter.ViewHolder> {
 
-        private final ArrayList<Group> groups;
+        public final ArrayList<Group> groups;
 
         public GroupRecylerAdapter(ArrayList<Group> items) {
             groups = items;

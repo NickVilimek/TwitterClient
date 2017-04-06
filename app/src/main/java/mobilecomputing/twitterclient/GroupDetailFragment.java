@@ -10,17 +10,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import mobilecomputing.twitterclient.model.SampleData;
-import mobilecomputing.twitterclient.model.TweetInfo;
+import mobilecomputing.twitterclient.backend.EnrichedTweet;
+import mobilecomputing.twitterclient.backend.TwitterInterface;
+import mobilecomputing.twitterclient.database.DBHelper;
 
 
 public class GroupDetailFragment extends Fragment {
     public static final String ARG_ITEM_ID = "item_id";
-
     private int title = -1;
+
+    public List<String> screenNames;
+    public List<ArrayList> tweets;
+    public DBHelper helper;
 
     public GroupDetailFragment() {}
 
@@ -28,14 +34,25 @@ public class GroupDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        screenNames = new ArrayList<>();
+        tweets = new ArrayList<>();
+        helper = new DBHelper(getContext());
+
         if (getArguments().containsKey(ARG_ITEM_ID)) {
 
             title = getArguments().getInt(ARG_ITEM_ID);
+            screenNames = helper.GetUsers(title);
 
+            TwitterInterface t = new TwitterInterface();
+            List<EnrichedTweet> tweets = t.getTopTweetsByDateSent(screenNames, 50);
+
+            /* Toolbar */
             Activity activity = this.getActivity();
             Toolbar toolbar = (Toolbar) activity.findViewById(R.id.detail_toolbar);
             if(toolbar!=null)
-                toolbar.setTitle(Integer.toString(title));
+                toolbar.setTitle("Tweets for Group " + Integer.toString(title));
+
+            /* Set up List */
         }
     }
 
@@ -45,16 +62,16 @@ public class GroupDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.tweet_list_fragment, container, false);
 
         RecyclerView tweetList = (RecyclerView) rootView.findViewById(R.id.tweet_list);
-        tweetList.setAdapter(new TweetRecyclerAdapter(SampleData.GenerateTweets()));
+        tweetList.setAdapter(new TweetRecyclerAdapter(new ArrayList<EnrichedTweet>()));
 
         return rootView;
     }
 
     public class TweetRecyclerAdapter extends RecyclerView.Adapter<TweetRecyclerAdapter.ViewHolder> {
 
-        private final ArrayList<TweetInfo> tweets;
+        private final ArrayList<EnrichedTweet> tweets;
 
-        public TweetRecyclerAdapter(ArrayList<TweetInfo> items) { tweets = items; }
+        public TweetRecyclerAdapter(ArrayList<EnrichedTweet> items) { tweets = items; }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -65,11 +82,11 @@ public class GroupDetailFragment extends Fragment {
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-            TweetInfo tempData = tweets.get(position);
+            EnrichedTweet tempData = tweets.get(position);
 
             holder.tweetInfo = tempData;
-            holder.userName.setText(tempData.userName);
-            holder.tweetText.setText(tempData.tweetText);
+            holder.userName.setText(tempData.getSenderScreenname());
+            holder.tweetText.setText(tempData.getText());
         }
 
         @Override
@@ -82,7 +99,7 @@ public class GroupDetailFragment extends Fragment {
             public final ImageView profileImage;
             public final TextView userName;
             public final TextView tweetText;
-            public TweetInfo tweetInfo;
+            public EnrichedTweet tweetInfo;
 
             public ViewHolder(View view) {
                 super(view);

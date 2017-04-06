@@ -21,6 +21,7 @@ public class GroupDetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("Tweets");
         }
 
         //Handles the case where rotation causes the screen to split into Master-Detail

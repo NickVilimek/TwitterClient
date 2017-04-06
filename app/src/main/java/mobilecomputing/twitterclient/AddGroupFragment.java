@@ -3,6 +3,7 @@ package mobilecomputing.twitterclient;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,22 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import mobilecomputing.twitterclient.database.DBHelper;
+import mobilecomputing.twitterclient.model.Group;
+
 public class AddGroupFragment extends DialogFragment {
 
-    public List<String> usersList = new ArrayList<>();
+    public ArrayList<String> usersList = new ArrayList<>();
+    public List<Group> groupList;
+
+    public void setGroupList(ArrayList<Group> groups){
+        groupList = groups;
+    }
 
 
     @Override
@@ -40,11 +50,14 @@ public class AddGroupFragment extends DialogFragment {
             @Override
             public void onClick(View view) {
                 //Error check
-                if(userName.getText().toString() == ""){
+                if(userName.getText().toString().equals("")){
                     errorLabel.setText("Must enter a username");
                 } else {
                     usersList.add(userName.getText().toString());
                     statusText.setText("@"+ userName.getText().toString() + " added");
+
+                    userName.setText("");
+                    errorLabel.setText("");
                 }
             }
         });
@@ -52,16 +65,20 @@ public class AddGroupFragment extends DialogFragment {
         okButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                if(groupName.getText().toString() == ""){
+                if(groupName.getText().toString().equals("")){
                     errorLabel.setText("Must enter group name");
                 } else if (usersList.isEmpty()){
                     errorLabel.setText("Must add at least one user");
                 } else {
+                    DBHelper helper = new DBHelper(getContext());
                     //
-                        //Save group
-                        //Add group to adapter
+                    Group newGroup = new Group();
+                    newGroup.groupName = groupName.getText().toString();
+                    newGroup.numberOfMembers = usersList.size();
+                    newGroup.id = (int) helper.AddGroup(newGroup);
+                    groupList.add(newGroup);
 
-                        //Save all users
+                    helper.AddUsers(usersList,newGroup.id);
 
                     //
                     getDialog().dismiss();
