@@ -24,6 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="textPersonName"
+            android:hint="twitter user name"
             android:ems="10"
             android:id="@+id/userName"
             android:layout_weight="1" />
@@ -37,12 +38,35 @@
     </LinearLayout>
 
     <TextView
+        android:layout_width="match_parent"
+        android:textSize="20dp"
+        android:textColor="@android:color/holo_green_dark"
+        android:layout_height="wrap_content"
+        android:id="@+id/userUpdate" />
+
+    <TextView
         android:textColor="@android:color/holo_red_light"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/usererror" />
+        android:id="@+id/userError" />
 
-    <ListView
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="wrap_content">
+
+        <Button
+            android:text="Ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/okButton"
+            android:layout_weight="1" />
+
+        <Button
+            android:text="Cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cancelButton"
+            android:layout_weight="1" />
+    </LinearLayout>
 </LinearLayout>

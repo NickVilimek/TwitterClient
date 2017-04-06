@@ -77,14 +77,6 @@ public class GroupListActivity extends AppCompatActivity {
             holder.membersNum.setText(Integer.toString(currentGroup.numberOfMembers)+ " members");
             holder.mContentView.setText(currentGroup.groupName);
 
-            //Pencil icon - click to edit group
-            holder.editButton.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    Toast.makeText(GroupListActivity.this, "hello", Toast.LENGTH_SHORT).show();
-                }
-            });
-
             //Red x - deletes group
             holder.deleteButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -145,7 +137,6 @@ public class GroupListActivity extends AppCompatActivity {
             public final CardView mCardView;
             public final TextView mIdView;
             public final TextView mContentView;
-            public final ImageButton editButton;
             public final ImageButton deleteButton;
             public final TextView membersNum;
             public Group mItem;
@@ -156,7 +147,6 @@ public class GroupListActivity extends AppCompatActivity {
                 mCardView= (CardView) view.findViewById(R.id.card_view);
                 mIdView = (TextView) view.findViewById(R.id.id);
                 mContentView = (TextView) view.findViewById(R.id.content);
-                editButton = (ImageButton) view.findViewById(R.id.editButton);
                 deleteButton = (ImageButton) view.findViewById(R.id.deleteButton);
                 membersNum = (TextView) view.findViewById(R.id.members);
             }
