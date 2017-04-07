@@ -69,7 +69,9 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
     public void DeleteGroup(int id){
-         _db.delete(DBTables.GroupTable.TABLE_NAME, DBTables.GroupTable._ID + "=" + Integer.toString(id), null);
+        _db.delete(DBTables.ScreenNameTable.TABLE_NAME, DBTables.ScreenNameTable.COLUMN_NAME_GROUP_ID
+                + "=" + Integer.toString(id), null);
+        _db.delete(DBTables.GroupTable.TABLE_NAME, DBTables.GroupTable._ID + "=" + Integer.toString(id), null);
 
     }
 
