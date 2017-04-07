@@ -96,7 +96,9 @@ public class GroupListActivity extends AppCompatActivity {
                     builder.setPositiveButton(
                             "Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int id) {
+                                    Group group = groups.get(position);
                                     groups.remove(position);
+                                    helper.DeleteGroup(group.id);
                                     //Delete from database
                                     notifyDataSetChanged();
                                 }

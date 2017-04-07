@@ -1,6 +1,9 @@
 package mobilecomputing.twitterclient;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +29,10 @@ public class GroupDetailFragment extends Fragment {
     private int title = -1;
 
     public List<String> screenNames;
-    public List<ArrayList> tweets;
+    public ArrayList<EnrichedTweet> tweets;
     public DBHelper helper;
+
+    public TweetRecyclerAdapter adapter;
 
     public GroupDetailFragment() {}
 
@@ -42,9 +48,6 @@ public class GroupDetailFragment extends Fragment {
 
             title = getArguments().getInt(ARG_ITEM_ID);
             screenNames = helper.GetUsers(title);
-
-            TwitterInterface t = new TwitterInterface();
-            List<EnrichedTweet> tweets = t.getTopTweetsByDateSent(screenNames, 50);
 
             /* Toolbar */
             Activity activity = this.getActivity();
@@ -62,7 +65,10 @@ public class GroupDetailFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.tweet_list_fragment, container, false);
 
         RecyclerView tweetList = (RecyclerView) rootView.findViewById(R.id.tweet_list);
-        tweetList.setAdapter(new TweetRecyclerAdapter(new ArrayList<EnrichedTweet>()));
+        adapter = new TweetRecyclerAdapter(tweets);
+        tweetList.setAdapter(adapter);
+
+        TwitterInterface t = new TwitterInterface();
 
         return rootView;
     }
@@ -71,7 +77,36 @@ public class GroupDetailFragment extends Fragment {
 
         private final ArrayList<EnrichedTweet> tweets;
 
-        public TweetRecyclerAdapter(ArrayList<EnrichedTweet> items) { tweets = items; }
+        public TweetRecyclerAdapter(ArrayList<EnrichedTweet> items) {
+            tweets = items;
+            TwitterInterface t = new TwitterInterface();
+            new TwitterDataTask(tweets,screenNames,adapter).execute(t);
+        }
+
+        private class TwitterDataTask extends AsyncTask<TwitterInterface, Void, List<EnrichedTweet>> {
+            List<EnrichedTweet> tweets;
+            List<String> screenNames;
+            TweetRecyclerAdapter adapter;
+
+            public TwitterDataTask(List<EnrichedTweet> _tweets, List<String> _screenNames,TweetRecyclerAdapter _adapter) {
+                this.tweets = _tweets;
+                this.screenNames = _screenNames;
+                this.adapter = _adapter;
+            }
+
+            @Override
+            protected List<EnrichedTweet> doInBackground(TwitterInterface... twitterInterfaces) {
+                List<EnrichedTweet> tweets = twitterInterfaces[0].getTopTweetsByDateSent(screenNames, 5);
+                return tweets;
+            }
+
+            protected void onPostExecute(List<EnrichedTweet> result) {
+                tweets.addAll(result);
+                TweetRecyclerAdapter.this.notifyDataSetChanged();
+            }
+
+
+        }
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -85,6 +120,9 @@ public class GroupDetailFragment extends Fragment {
             EnrichedTweet tempData = tweets.get(position);
 
             holder.tweetInfo = tempData;
+
+            new DownloadImageTask(holder.profileImage).execute(holder.tweetInfo.getSenderImageUrl());
+
             holder.userName.setText(tempData.getSenderScreenname());
             holder.tweetText.setText(tempData.getText());
         }
@@ -108,6 +146,29 @@ public class GroupDetailFragment extends Fragment {
                 userName = (TextView) view.findViewById(R.id.displayName);
                 tweetText = (TextView) view.findViewById(R.id.tweetText);
             }
+        }
+    }
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 }
