@@ -44,21 +44,23 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(command);
 
         /* Create Sample Data */
-        Group group = new Group();
-        group.groupName = "Celebrities";
-        group.numberOfMembers = 2;
 
-        int id = (int) AddGroup(group);
+        ContentValues values = new ContentValues();
+        values.put(DBTables.GroupTable.COLUMN_NAME_GROUP_NAME, "Celebrities");
+        values.put(DBTables.GroupTable.COLUMN_NAME_NUM_MEMBERS, 2);
 
-        ArrayList<String> users = new ArrayList<>();
+        int id = (int) db.insert(DBTables.GroupTable.TABLE_NAME, null, values);
 
-        String one = "realdonaldtrump";
-        String two = "barackobama";
+        values = new ContentValues();
+        values.put(DBTables.ScreenNameTable.COLUMN_NAME_GROUP_ID, id);
+        values.put(DBTables.ScreenNameTable.COLUMN_NAME_SCREENAME, "realdonaldtrump");
+        db.insert(DBTables.ScreenNameTable.TABLE_NAME, null, values);
 
-        users.add(one);
-        users.add(two);
+        values = new ContentValues();
+        values.put(DBTables.ScreenNameTable.COLUMN_NAME_GROUP_ID, id);
+        values.put(DBTables.ScreenNameTable.COLUMN_NAME_SCREENAME, "barackobama");
+        db.insert(DBTables.ScreenNameTable.TABLE_NAME, null, values);
 
-        AddUsers(users,id);
     }
 
     public long AddGroup(Group newGroup){

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import mobilecomputing.twitterclient.backend.EnrichedTweet;
@@ -125,6 +126,7 @@ public class GroupDetailFragment extends Fragment {
 
             holder.userName.setText(tempData.getSenderScreenname());
             holder.tweetText.setText(tempData.getText());
+            holder.dateCreated.setText(tempData.getDateCreated().toString());
         }
 
         @Override
@@ -137,6 +139,7 @@ public class GroupDetailFragment extends Fragment {
             public final ImageView profileImage;
             public final TextView userName;
             public final TextView tweetText;
+            public final TextView dateCreated;
             public EnrichedTweet tweetInfo;
 
             public ViewHolder(View view) {
@@ -145,6 +148,7 @@ public class GroupDetailFragment extends Fragment {
                 profileImage = (ImageView) view.findViewById(R.id.profileImage);
                 userName = (TextView) view.findViewById(R.id.displayName);
                 tweetText = (TextView) view.findViewById(R.id.tweetText);
+                dateCreated = (TextView) view.findViewById(R.id.dateCreated);
             }
         }
     }
